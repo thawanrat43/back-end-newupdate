@@ -64,27 +64,27 @@ app.post('/authen',jsonParser,function(req,res,next){
   }
   
 })
-// app.post('/home',jsonParser, function (req, res, next) {
-//   try{
-//     const token=req.headers.authorization.split(' ')[1]
-//     var decode =jwt.verify(token,secret);
-//     res.json({status:'ok',decode})
+app.post('/home',jsonParser, function (req, res, next) {
+  try{
+    const token=req.headers.authorization.split(' ')[1]
+    var decode =jwt.verify(token,secret);
+    res.json({status:'ok',decode})
     
-//   }catch(err){
-//     res.json({status:'error', message:err.message})
-//   }
-//   connection.execute(
-//     'INSERT INTO record(fname,lname,idnumber) VALUES (?, ?, ?, ?)',
-//     [req.body.fname,req.body.lname,req.body.idnumber,req.body.type_id],
-//     function(err, results, fields) {
-//       if(err) {
-//         res.json({status:'error',message:err})
-//         return
-//       }
-//       res.json({status:'OK'})
-//     }
-//   );
-// })
+  }catch(err){
+    res.json({status:'error', message:err.message})
+  }
+  connection.execute(
+    'INSERT INTO record(fname,lname,idnumber) VALUES (?, ?, ?, ?)',
+    [req.body.fname,req.body.lname,req.body.idnumber,req.body.type_id],
+    function(err, results, fields) {
+      if(err) {
+        res.json({status:'error',message:err})
+        return
+      }
+      res.json({status:'OK'})
+    }
+  );
+})
 app.get('/profile',jsonParser, function (req, res) {
   connection.query('SELECT *FROM users WHERE id,email,fname,lname,username',
     [req.body.id,req.body.email,req.body.fname,req.body.lname,req.body.username],
@@ -93,7 +93,6 @@ app.get('/profile',jsonParser, function (req, res) {
     }
   );
 })
-const postRouter = require("./routes/home");
-app.use("/home", postRouter);
+
 // app.listen(process.env.PROST || 3000)
 app.listen(3333,() => { console.log('Server listening on port 3333')});
