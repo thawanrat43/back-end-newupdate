@@ -4,7 +4,7 @@ const app = express();
 const cookieParser = require('cookie-parser');
 // const db  = require('../db.js')
 // app.use(express.json());
-
+require('dotenv').config()
 var cors = require('cors');
 // require('dotenv').config()
 var bodyParser = require('body-parser')
@@ -16,7 +16,8 @@ const multer = require('multer')
 const fs =require('fs')
 const mysql = require('mysql2');
 // create the connection to database
-const connection = require('./db')
+// const connection = require('./db')
+const connection =mysql.createConnection(process.env.DATABASE_URL)
 const sessions = require('express-session');
 const Cookiecheck = require('./routes/cookie');
 const profile  = require('./routes/profile');
@@ -480,33 +481,33 @@ app.get("/", (req, res) => {
   // server จะสามารถส่งทั้ง header ต่างๆหรือจะตัวหนังสือ json อะไรก็ได้กลับไป
   res.send("Hello World");
 });
-const checkcookie = (req, res, next) => {
-  const token = req.cookies.access_token;
-  if (!token) {
-    return res.sendStatus(403);
-  }
-  try {
-    const data = jwt.verify(token, "YOUR_SECRET_KEY");
-    req.userId = data.id;
-    req.userRole = data.role;
-    return next();
-  } catch {
-    return res.sendStatus(403);
-  }
-};
-app.get("/setCookies",(req, res) => {
-  return res.json({ user: { id: req.useId, role: req.userRole} });
-  // const token = 'seentoken'
-  // console.log(token);
-  //   res.cookie('jwt', token, {
-  //   expires: new Date(Date.now() +50000),
-  //   ttpOnly: true,
-  //               //secure :true,
-  //   });
-  // console.log(req.cookies.jwt);
+// const checkcookie = (req, res, next) => {
+//   const token = req.cookies.access_token;
+//   if (!token) {
+//     return res.sendStatus(403);
+//   }
+//   try {
+//     const data = jwt.verify(token, "YOUR_SECRET_KEY");
+//     req.userId = data.id;
+//     req.userRole = data.role;
+//     return next();
+//   } catch {
+//     return res.sendStatus(403);
+//   }
+// };
+// app.get("/setCookies",(req, res) => {
+//   return res.json({ user: { id: req.useId, role: req.userRole} });
+//   // const token = 'seentoken'
+//   // console.log(token);
+//   //   res.cookie('jwt', token, {
+//   //   expires: new Date(Date.now() +50000),
+//   //   ttpOnly: true,
+//   //               //secure :true,
+//   //   });
+//   // console.log(req.cookies.jwt);
 
-  // res.end();
-});
+//   // res.end();
+// });
 
 
 
