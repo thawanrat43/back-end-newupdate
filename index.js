@@ -19,9 +19,9 @@ const mysql = require('mysql2');
 // const connection = require('./db')
 const connection =mysql.createConnection(process.env.DATABASE_URL)
 const sessions = require('express-session');
-const { result } = require('lodash');
-const router = express.Router();
-const morgan = require('morgan');
+// const { result } = require('lodash');
+// const router = express.Router();
+// const morgan = require('morgan');
 const path =require('path');
 var session;
 const upload = multer({dest: 'uploads/'});
