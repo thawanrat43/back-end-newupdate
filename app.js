@@ -45,24 +45,24 @@ app.use(sessions({
 }))
 app.use(express.json())
 app.use(express.static('uploads'));
-const Notlogin =(req,res ,next )=>{
-  if (!req.session.islogin){
-    return res.render('/login')
-  }
-}
-const Islogin =(req,res ,next )=>{
-  if (req.session.islogin){
-    return res.render('/home')
-  }
-}
-app.get('/',Notlogin, (req,res,next) => {
-  connection.execute('SELECT username FROM users WHERE id=?',[req.session.userid])
-    .than(([rows]) => {
-      res.render('profile'),{
-        name:rows[0].name
-      }
-    })
-})
+// const Notlogin =(req,res ,next )=>{
+//   if (!req.session.islogin){
+//     return res.render('/login')
+//   }
+// }
+// const Islogin =(req,res ,next )=>{
+//   if (req.session.islogin){
+//     return res.render('/home')
+//   }
+// }
+// app.get('/',Notlogin, (req,res,next) => {
+//   connection.execute('SELECT username FROM users WHERE id=?',[req.session.userid])
+//     .than(([rows]) => {
+//       res.render('profile'),{
+//         name:rows[0].name
+//       }
+//     })
+// })
 // app.use("/api/login",loginRoutes);
 app.post('/register', function (req, res, next) {
   const img = 'user-6820232_640.webp';
