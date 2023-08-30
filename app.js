@@ -32,7 +32,7 @@ app.use(cookieParser());
 // parse application/json
 // app.use(cors())
 const corsOptions ={
-    origin:'https://front-end-updatenew.vercel.app', 
+    origin:'https://front-end-updatenew.vercel.app/', 
     credentials:true,            //access-control-allow-credentials:true
     optionSuccessStatus:200
 }
