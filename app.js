@@ -32,7 +32,7 @@ app.use(cookieParser());
 // parse application/json
 // app.use(cors())
 const corsOptions ={
-    origin:'http://localhost:3001', 
+    origin:'http://localhost:3001/login', 
     credentials:true,            //access-control-allow-credentials:true
     optionSuccessStatus:200
 }
