@@ -32,7 +32,7 @@ app.use(cookieParser());
 // parse application/json
 // app.use(cors())
 const corsOptions ={
-    origin:'http://localhost:3001/login', 
+    origin:'https://front-end-updatenew-5sysh5uuf-thawanrat43.vercel.app', 
     credentials:true,            //access-control-allow-credentials:true
     optionSuccessStatus:200
 }
