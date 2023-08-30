@@ -17,32 +17,38 @@ const fs =require('fs')
 const mysql = require('mysql2');
 // create the connection to database
 // const connection = require('./db')
-const connection =mysql.createConnection(process.env.DATABASE_URL)
+// const { process } = require('ipaddr.js');
+const connection =mysql.createConnection(process.env.DATABASE_URL);
 const sessions = require('express-session');
 // const { result } = require('lodash');
 // const router = express.Router();
 // const morgan = require('morgan');
 const path =require('path');
+
 var session;
 const upload = multer({dest: 'uploads/'});
 // create application/json parser
 app.use(cookieParser());
 // parse application/json
 // app.use(cors())
-app.use(cors({
-  origin:["http://localhost:3000"],
-  methods:["POST","GET"],
-  credentials:true
-}));
-app.use(sessions({
-  secret : 'session_secret',
-  resave:false,
-  saveUninitialized : false,
-  cookie :{
-    secure:false,
-    maxAge : 1000*60*60*24
-  }
-}))
+
+app.use(cors());
+// app.use((req,res,next)=>{
+//   res.header('Access-Control-Allow-Origin','*');
+//   res.header('Access-Control-Allow-Headers','Origin, X-Requested-With, Content-Type, Accept');
+//   res.header( "Access-Control-Allow-Methods", "PUT, POST, GET, DELETE, PATCH, OPTIONS" ); 
+
+//   next();
+// })
+// app.use(sessions({
+//   secret : 'session_secret',
+//   resave:false,
+//   saveUninitialized : false,
+//   cookie :{
+//     secure:false,
+//     maxAge : 1000*60*60*24
+//   }
+// }))
 app.use(express.json())
 app.use(express.static('uploads'));
 // const Notlogin =(req,res ,next )=>{
@@ -87,7 +93,7 @@ app.post('/register', function (req, res, next) {
   });
 })
 
-app.post('/login',jsonParser, function (req, res, next) {
+app.post('/login', function (req, res, next) {
   try{
     connection.query('SELECT * FROM users WHERE email=?',[req.body.email],
     function(err, users) {
@@ -102,18 +108,20 @@ app.post('/login',jsonParser, function (req, res, next) {
               return res.status(400).json('wrong password');
             }
             if(islogin) {
-              session = req.session;
-              session.userid = users[0].id;
-              req.session.islogin = true;
-              console.log(req.session)
-              const token = jwt.sign({ id :users[0].id}, 'secret_token111');
+              // session = req.session;
+              // session.userid = users[0].id;
+              // req.session.islogin = true;
+              // console.log(req.session)
+              const token = jwt.sign({ id :users[0].id},process.env.TOKEN_KEY,{expiresIn:"2h"});
+              // users[0].token = token;
+              // return res.status(201).json(users);
               return res
                 .cookie("access_token", token, {
                   httpOnly: true,
                   
                 })
                 .status(200)
-                .json(users[0].password);
+                .json(users[0].id);
                 
               
             }else{
@@ -239,10 +247,24 @@ app.post('/updatepic/:id',uploads.single('file'),function (req, res, next){
       res.status(500).send('Server Error')
   }
 })
+const verifyjwt = (req,res,next)=>{
+  const token = req.header["access-token"]
+  if (!token) return res.status(401).json("Not authenticated!");
+  else{
+    jwt.verify(token,process.env.TOKEN_KEY, (err, userInfo) => {
+      if (err) return res.status(403).json("Token is not valid!");
+      else{
+        req.userid = userInfo.id;
+        next();
+      }
+    })
+  }
+  
+}
 app.get('/profileid',  function (req, res, next) {
   const token = req.cookies.access_token;
   if (!token) return res.status(401).json("Not authenticated!");
-  jwt.verify(token,'secret_token111', (err, userInfo) => {
+  jwt.verify(token,process.env.TOKEN_KEY, (err, userInfo) => {
     if (err) return res.status(403).json("Token is not valid!");
     else{
       connection.query("SELECT * FROM users WHERE id = ?", [userInfo.id], (err, data) => {
@@ -255,8 +277,9 @@ app.get('/profileid',  function (req, res, next) {
 })
 app.post('/home', function (req, res, next) {
   const token = req.cookies.access_token;
+  console.log(req.cookies.access_token)
   if (!token) return res.status(401).json("Not authenticated!");
-  jwt.verify(token,'secret_token111', (err, userInfo) => {
+  jwt.verify(token,process.env.TOKEN_KEY, (err, userInfo) => {
     if (err) return res.status(403).json("Token is not valid!");
     else{
       const pay_id = 'ยังไม่ชำระเงิน';
