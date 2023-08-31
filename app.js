@@ -1,11 +1,10 @@
 var express = require('express');
-var cors = require('cors');
+const cors = require('cors');
 const app = express();
 const cookieParser = require('cookie-parser');
 // const db  = require('../db.js')
 // app.use(express.json());
 require('dotenv').config()
-var cors = require('cors');
 // require('dotenv').config()
 var bodyParser = require('body-parser')
 var jsonParser = bodyParser.json();
@@ -31,16 +30,17 @@ const upload = multer({dest: 'uploads/'});
 app.use(cookieParser());
 // parse application/json
 // app.use(cors())
-const corsOptions ={
-    origin:'https://front-end-updatenew-5sysh5uuf-thawanrat43.vercel.app', 
-    credentials:true,            //access-control-allow-credentials:true
-    optionSuccessStatus:200
-}
-app.use(cors(corsOptions));
+// const corsOptions ={
+//     origin:'https://front-end-updatenew-5sysh5uuf-thawanrat43.vercel.app', 
+//     credentials:true,            //access-control-allow-credentials:true
+//     optionSuccessStatus:200
+// }
+// app.use(cors(corsOptions));
+app.use(cors());
 // app.use((req,res,next)=>{
-//   res.header('Access-Control-Allow-Origin','*');
-//   res.header('Access-Control-Allow-Headers','Origin, X-Requested-With, Content-Type, Accept');
-//   res.header( "Access-Control-Allow-Methods", "PUT, POST, GET, DELETE, PATCH, OPTIONS" ); 
+//   res.setHeader('Access-Control-Allow-Origin','*');
+//   res.setHeader('Access-Control-Allow-Headers','Origin, X-Requested-With, Content-Type, Accept');
+//   res.settHheader( "Access-Control-Allow-Methods", "PUT, POST, GET, DELETE, PATCH, OPTIONS" ); 
 
 //   next();
 // })
@@ -74,6 +74,10 @@ app.use(express.static('uploads'));
 //     })
 // })
 // app.use("/api/login",loginRoutes);
+app.get("/", (req, res) => {
+  // server จะสามารถส่งทั้ง header ต่างๆหรือจะตัวหนังสือ json อะไรก็ได้กลับไป
+  res.send("Hello World");
+});
 app.post('/register', function (req, res, next) {
   const img = 'user-6820232_640.webp';
   const status = '1';
@@ -97,7 +101,7 @@ app.post('/register', function (req, res, next) {
   });
 })
 
-app.post('/login', function (req, res, next) {
+app.post('/api/login', function (req, res, next) {
   try{
     connection.query('SELECT * FROM users WHERE email=?',[req.body.email],
     function(err, users) {
@@ -502,10 +506,7 @@ app.get('/profilehistory/:id',function (req, res, next) {
     return res.status(500).send();
   }
 })
-app.get("/", (req, res) => {
-  // server จะสามารถส่งทั้ง header ต่างๆหรือจะตัวหนังสือ json อะไรก็ได้กลับไป
-  res.send("Hello World");
-});
+
 // const checkcookie = (req, res, next) => {
 //   const token = req.cookies.access_token;
 //   if (!token) {
