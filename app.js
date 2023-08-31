@@ -78,7 +78,7 @@ app.use(express.static('uploads'));
 //   // server จะสามารถส่งทั้ง header ต่างๆหรือจะตัวหนังสือ json อะไรก็ได้กลับไป
 //   res.send("Hello World");
 // });
-app.use(express.static('dist'))
+
 app.post('/api/register', function (req, res, next) {
   const img = 'user-6820232_640.webp';
   const status = '1';
