@@ -74,9 +74,27 @@ app.use(express.static('uploads'));
 //     })
 // })
 // app.use("/api/login",loginRoutes);
-app.get("/", (req, res) => {
-  // server จะสามารถส่งทั้ง header ต่างๆหรือจะตัวหนังสือ json อะไรก็ได้กลับไป
-  res.send("Hello World");
+// app.get("/", (req, res) => {
+//   // server จะสามารถส่งทั้ง header ต่างๆหรือจะตัวหนังสือ json อะไรก็ได้กลับไป
+//   res.send("Hello World");
+// });
+app.use(function (req, res, next) {
+
+  // Website you wish to allow to connect
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+
+  // Request methods you wish to allow
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+
+  // Request headers you wish to allow
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+
+  // Set to true if you need the website to include cookies in the requests sent
+  // to the API (e.g. in case you use sessions)
+  res.setHeader('Access-Control-Allow-Credentials', true);
+
+  // Pass to next layer of middleware
+  next();
 });
 app.post('/api/register', function (req, res, next) {
   const img = 'user-6820232_640.webp';
@@ -255,20 +273,20 @@ app.post('/api/updatepic/:id',uploads.single('file'),function (req, res, next){
       res.status(500).send('Server Error')
   }
 })
-const verifyjwt = (req,res,next)=>{
-  const token = req.header["access-token"]
-  if (!token) return res.status(401).json("Not authenticated!");
-  else{
-    jwt.verify(token,process.env.TOKEN_KEY, (err, userInfo) => {
-      if (err) return res.status(403).json("Token is not valid!");
-      else{
-        req.userid = userInfo.id;
-        next();
-      }
-    })
-  }
+// const verifyjwt = (req,res,next)=>{
+//   const token = req.header["access-token"]
+//   if (!token) return res.status(401).json("Not authenticated!");
+//   else{
+//     jwt.verify(token,process.env.TOKEN_KEY, (err, userInfo) => {
+//       if (err) return res.status(403).json("Token is not valid!");
+//       else{
+//         req.userid = userInfo.id;
+//         next();
+//       }
+//     })
+//   }
   
-}
+// }
 app.get('/api/profileid',  function (req, res, next) {
   const token = req.cookies.access_token;
   if (!token) return res.status(401).json("Not authenticated!");
