@@ -30,13 +30,13 @@ const upload = multer({dest: 'uploads/'});
 app.use(cookieParser());
 // parse application/json
 // app.use(cors())
-// const corsOptions ={
-//     origin:'https://front-end-updatenew-5sysh5uuf-thawanrat43.vercel.app', 
-//     credentials:true,            //access-control-allow-credentials:true
-//     optionSuccessStatus:200
-// }
-// app.use(cors(corsOptions));
-app.use(cors());
+const corsOptions ={
+    origin: ['https://checkwebb.netlify.app/'], 
+    credentials:true,            
+    maxAge: 3600
+}
+app.use(cors(corsOptions));
+// app.use(cors());
 // app.use((req,res,next)=>{
 //   res.setHeader('Access-Control-Allow-Origin','*');
 //   res.setHeader('Access-Control-Allow-Headers','Origin, X-Requested-With, Content-Type, Accept');
@@ -78,24 +78,24 @@ app.use(express.static('uploads'));
 //   // server จะสามารถส่งทั้ง header ต่างๆหรือจะตัวหนังสือ json อะไรก็ได้กลับไป
 //   res.send("Hello World");
 // });
-app.use(function (req, res, next) {
+// app.use(function (req, res, next) {
 
-  // Website you wish to allow to connect
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+//   // Website you wish to allow to connect
+//   res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
 
-  // Request methods you wish to allow
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+//   // Request methods you wish to allow
+//   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
 
-  // Request headers you wish to allow
-  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+//   // Request headers you wish to allow
+//   res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
 
-  // Set to true if you need the website to include cookies in the requests sent
-  // to the API (e.g. in case you use sessions)
-  res.setHeader('Access-Control-Allow-Credentials', true);
+//   // Set to true if you need the website to include cookies in the requests sent
+//   // to the API (e.g. in case you use sessions)
+//   res.setHeader('Access-Control-Allow-Credentials', true);
 
-  // Pass to next layer of middleware
-  next();
-});
+//   // Pass to next layer of middleware
+//   next();
+// });
 app.post('/api/register', function (req, res, next) {
   const img = 'user-6820232_640.webp';
   const status = '1';
