@@ -31,7 +31,7 @@ app.use(cookieParser());
 // parse application/json
 // app.use(cors())
 const corsOptions ={
-    origin: ['https://checkwebb.netlify.app/'], 
+    origin: ['https://64f5bb2ad019ec2e9a3744c9--grand-dolphin-262897.netlify.app/'], 
     credentials:true,            
     maxAge: 3600
 }
