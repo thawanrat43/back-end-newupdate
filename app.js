@@ -29,7 +29,7 @@ const upload = multer({dest: 'uploads/'});
 // create application/json parser
 app.use(cookieParser());
 // parse application/json
-// app.use(cors())
+app.use(cors())
 
 
 // const API_URL ='http://localhost:3000'
@@ -56,15 +56,15 @@ app.use(cookieParser());
 // }));
 
 
-app.use((req,res,next)=>{
-  res.setHeader("Access-Control-Allow-Origin", "https://lambent-donut-b06776.netlify.app");
-  res.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
-  res.setHeader("Access-Control-Max-Age", "3600");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Origin, Cache-Control, X-Requested-With");
-  res.setHeader("Access-Control-Allow-Credentials", "true");
+// app.use((req,res,next)=>{
+//   res.setHeader("Access-Control-Allow-Origin", "https://lambent-donut-b06776.netlify.app");
+//   res.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
+//   res.setHeader("Access-Control-Max-Age", "3600");
+//   res.setHeader("Access-Control-Allow-Headers", "Content-Type, Origin, Cache-Control, X-Requested-With");
+//   res.setHeader("Access-Control-Allow-Credentials", "true");
 
-  next();
-})
+//   next();
+// })
 // app.use(sessions({
 //   secret : 'session_secret',
 //   resave:false,
