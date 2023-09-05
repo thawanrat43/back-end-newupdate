@@ -29,8 +29,18 @@ const upload = multer({dest: 'uploads/'});
 // create application/json parser
 app.use(cookieParser());
 // parse application/json
-app.use(cors())
+const whitelist = ['http://localhost:3000', 'https://lambent-donut-b06776.netlify.app'];
+const corsOptions = {
+  credentials: true, // This is important.
+  origin: (origin, callback) => {
+    if(whitelist.includes(origin))
+      return callback(null, true)
 
+      callback(new Error('Not allowed by CORS'));
+  }
+}
+
+app.use(cors(corsOptions));
 
 // const API_URL ='http://localhost:3000'
 // const proxyOptions = {
@@ -54,7 +64,6 @@ app.use(cors())
 //   origin:"http://localhost:3000",
 //   credentials :true
 // }));
-
 
 // app.use((req,res,next)=>{
 //   res.setHeader("Access-Control-Allow-Origin", "https://lambent-donut-b06776.netlify.app");
@@ -118,7 +127,7 @@ app.use(express.static('uploads'));
 //   // Pass to next layer of middleware
 //   next();
 // });
-app.post('/api/register', function (req, res, next) {
+app.post('/register', function (req, res, next) {
   const img = 'user-6820232_640.webp';
   const status = '1';
   const statusadmin = '';
@@ -200,7 +209,7 @@ app.get('/profile/:id',function (req, res, next) {
     return res.status(500).send();
   }
 })
-app.post('/api/code/:id',function (req, res, next) {
+app.post('/code/:id',function (req, res, next) {
   const userid = req.params.id; 
   const {oldpassword ,newpassword,conpassword} =req.body;
   try{
@@ -240,7 +249,7 @@ app.post('/api/code/:id',function (req, res, next) {
   }
 });
 
-app.get('/api/image/:id',upload.single('file'),function (req, res, next) {
+app.get('/image/:id',upload.single('file'),function (req, res, next) {
   const userid = req.params.id;
   
   try{
@@ -276,7 +285,7 @@ const storage = multer.diskStorage({
 const uploads =multer({
   storage: storage
 })
-app.post('/api/updatepic/:id',uploads.single('file'),function (req, res, next){
+app.post('/updatepic/:id',uploads.single('file'),function (req, res, next){
   console.log(req.file)
   try {
       // code
@@ -309,7 +318,7 @@ app.post('/api/updatepic/:id',uploads.single('file'),function (req, res, next){
 //   }
   
 // }
-app.get('/api/profileid',  function (req, res, next) {
+app.get('/profileid',  function (req, res, next) {
   const token = req.cookies.access_token;
   if (!token) return res.status(401).json("Not authenticated!");
   jwt.verify(token,process.env.TOKEN_KEY, (err, userInfo) => {
@@ -323,7 +332,7 @@ app.get('/api/profileid',  function (req, res, next) {
     }
   })
 })
-app.post('/api/home', function (req, res, next) {
+app.post('/home', function (req, res, next) {
   const token = req.cookies.access_token;
   console.log(req.cookies.access_token)
   if (!token) return res.status(401).json("Not authenticated!");
@@ -359,7 +368,7 @@ app.post('/api/home', function (req, res, next) {
       
 
 })
-app.post('/api/idhistory',function (req, res, next){
+app.post('/idhistory',function (req, res, next){
   try {
       
       connection.query("SELECT * FROM history WHERE fname = ? AND lname = ? " ,[req.body.fname,req.body.lname],(err,deletedata) =>  {
@@ -373,7 +382,7 @@ app.post('/api/idhistory',function (req, res, next){
       res.status(500).send('Server Error')
   }
 })
-app.post('/api/homes/:id', function (req, res, next) {
+app.post('/homes/:id', function (req, res, next) {
   const userid = req.params.id;
   connection.execute("INSERT INTO history(fname,lname,userid) VALUES (?)",
   [req.body.fname,req.body.lname,userid],
@@ -386,7 +395,7 @@ app.post('/api/homes/:id', function (req, res, next) {
       }
   )
 })
-app.post('/api/adminregister', function (req, res, next) {
+app.post('/adminregister', function (req, res, next) {
   const img = 'user-6820232_640.webp';
   connection.query("SELECT username FROM users WHERE username = ?", [req.body.username], (err, data) => {
     if (err) return res.status(500).json(err);
@@ -407,7 +416,7 @@ app.post('/api/adminregister', function (req, res, next) {
   });
   
 })
-app.get('/api/adminuser',function (req,res,next){
+app.get('/adminuser',function (req,res,next){
   try{
     connection.execute("SELECT username,lname,fname,email,phonenum,profilepic,id  FROM users",(err,data) =>  {
       if (err) return res.send(err);
@@ -419,7 +428,7 @@ app.get('/api/adminuser',function (req,res,next){
   }
 })
 
-app.post('/api/admindelete/:id',function (req, res, next){
+app.post('/admindelete/:id',function (req, res, next){
   try {
       const userid =req.params.id;
       connection.query("DELETE FROM users WHERE `id`=? ",[userid],(err,deletedata) =>  {
@@ -434,7 +443,7 @@ app.post('/api/admindelete/:id',function (req, res, next){
   }
 })
 
-app.get('/api/pagestatus/:id',upload.single('file'),function (req, res, next) {
+app.get('/pagestatus/:id',upload.single('file'),function (req, res, next) {
   const userid = req.params.id;
   
   try{
@@ -448,7 +457,7 @@ app.get('/api/pagestatus/:id',upload.single('file'),function (req, res, next) {
   }
 })
 
-app.post('/api/adminhistory/:id', function (req, res, next) {
+app.post('/adminhistory/:id', function (req, res, next) {
   const userid = req.params.id;
   connection.execute("INSERT INTO historydetails(id,birthday,father,mother,religion,criminal,bankrupt,credit,penalty,global,other) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
   [userid,req.body.birthday,req.body.father,req.body.mother,req.body.religion,req.body.criminal,req.body.bankrupt,req.body.credit,req.body.penalty,req.body.global,req.body.other],
@@ -461,7 +470,7 @@ app.post('/api/adminhistory/:id', function (req, res, next) {
       }
   )
 })
-app.get('/api/historyselect/:id',function (req, res, next) {
+app.get('/historyselect/:id',function (req, res, next) {
   const userid = req.params.id;
   
   try{
@@ -475,7 +484,7 @@ app.get('/api/historyselect/:id',function (req, res, next) {
   }
 })
 
-app.post('/api/pay/:id',function (req, res, next){
+app.post('/pay/:id',function (req, res, next){
   const statuspay ="กำลังตรวจสอบการชำระเงิน";
   try {
  
@@ -490,7 +499,7 @@ app.post('/api/pay/:id',function (req, res, next){
       res.status(500).send('Server Error')
   }
 })
-app.get('/api/finish/:id',function (req, res, next) {
+app.get('/finish/:id',function (req, res, next) {
   const userid = req.params.id;
   
   try{
@@ -503,7 +512,7 @@ app.get('/api/finish/:id',function (req, res, next) {
     return res.status(500).send();
   }
 })
-app.get('/api/historydetail/:id',function (req, res, next) {
+app.get('/historydetail/:id',function (req, res, next) {
   const userid = req.params.id;
   try{
     connection.execute("SELECT birthday,father,mother,religion,criminal,bankrupt,credit,penalty,global,other FROM historydetails WHERE id=? ",[userid],(err,data) =>  {
@@ -515,7 +524,7 @@ app.get('/api/historydetail/:id',function (req, res, next) {
     return res.status(500).send();
   }
 })
-app.get('/api/history/:id',upload.single('file'),function (req, res, next) {
+app.get('/history/:id',upload.single('file'),function (req, res, next) {
   const userid = req.params.id;
   
   try{
@@ -528,7 +537,7 @@ app.get('/api/history/:id',upload.single('file'),function (req, res, next) {
     return res.status(500).send();
   }
 })
-app.get('/api/profilehistory/:id',function (req, res, next) {
+app.get('/profilehistory/:id',function (req, res, next) {
   const userid = req.params.id;
   
   try{
