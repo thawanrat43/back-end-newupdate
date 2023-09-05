@@ -29,7 +29,13 @@ const upload = multer({dest: 'uploads/'});
 // create application/json parser
 app.use(cookieParser());
 // parse application/json
-app.use(cors())
+// app.use(cors())
+response.setHeader("Access-Control-Allow-Origin", "*");
+response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
+response.setHeader("Access-Control-Max-Age", "3600");
+response.setHeader("Access-Control-Allow-Headers", "Content-Type, Origin, Cache-Control, X-Requested-With");
+response.setHeader("Access-Control-Allow-Credentials", "true");
+
 // const API_URL ='http://localhost:3000'
 // const proxyOptions = {
 //   target: API_URL,
