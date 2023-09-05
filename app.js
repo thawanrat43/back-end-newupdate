@@ -29,7 +29,7 @@ const upload = multer({dest: 'uploads/'});
 // create application/json parser
 app.use(cookieParser());
 // parse application/json
-app.options('*', cors())
+app.options('https://lambent-donut-b06776.netlify.app', cors())
 // const whitelist = ['http://localhost:3000', 'https://lambent-donut-b06776.netlify.app'];
 // const corsOptions = {
 //   credentials: true, // This is important.
