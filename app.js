@@ -57,11 +57,11 @@ app.use(cookieParser());
 
 
 app.use((req,res,next)=>{
-  response.setHeader("Access-Control-Allow-Origin", "*");
-  response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
-  response.setHeader("Access-Control-Max-Age", "3600");
-  response.setHeader("Access-Control-Allow-Headers", "Content-Type, Origin, Cache-Control, X-Requested-With");
-  response.setHeader("Access-Control-Allow-Credentials", "true");
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
+  res.setHeader("Access-Control-Max-Age", "3600");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Origin, Cache-Control, X-Requested-With");
+  res.setHeader("Access-Control-Allow-Credentials", "true");
 
   next();
 })
