@@ -182,16 +182,16 @@ app.post('/login', function (req, res, next) {
               // session.userid = users[0].id;
               // req.session.islogin = true;
               // console.log(req.session)
-              const token = jwt.sign({ id :users[0].id},process.env.TOKEN_KEY,{expiresIn:"2h"});
-              // users[0].token = token;
-              // return res.status(201).json(users);
-              return res
-                .cookie("access_token", token, {
-                  httpOnly: true,
+              // const token = jwt.sign({ id :users[0].id},process.env.TOKEN_KEY,{expiresIn:"2h"});
+              // // users[0].token = token;
+              // // return res.status(201).json(users);
+              // return res
+              //   .cookie("access_token", token, {
+              //     httpOnly: true,
                   
-                })
-                .status(200)
-                .json(users[0].id);
+              //   })
+              //   .status(200)
+              //   .json(users[0].id);
                 
               
             }else{
