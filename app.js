@@ -12,13 +12,13 @@ const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const jwt = require('jsonwebtoken');
 const multer = require('multer')
-const fs =require('fs')
+const { createProxyMiddleware } = require('http-proxy-middleware');
 const mysql = require('mysql2');
 // create the connection to database
 // const connection = require('./db')
 // const { process } = require('ipaddr.js');
 const connection =mysql.createConnection(process.env.DATABASE_URL);
-const sessions = require('express-session');
+
 // const { result } = require('lodash');
 // const router = express.Router();
 // const morgan = require('morgan');
@@ -30,6 +30,18 @@ const upload = multer({dest: 'uploads/'});
 app.use(cookieParser());
 // parse application/json
 app.use(cors())
+// const API_URL ='http://localhost:3000'
+// const proxyOptions = {
+//   target: API_URL,
+//   changeOrigin: true,
+//   pathRewrite: {
+//       [`^/api/posts`]: '/posts',
+//   },
+// }
+
+// const proxy = createProxyMiddleware(proxyOptions);
+
+
 // const corsOptions ={
 //     origin: ['https://64f5bb2ad019ec2e9a3744c9--grand-dolphin-262897.netlify.app/'], 
 //     credentials:true,            
@@ -60,6 +72,7 @@ app.use(cors())
 // }))
 app.use(express.json())
 app.use(express.static('uploads'));
+
 // const Notlogin =(req,res ,next )=>{
 //   if (!req.session.islogin){
 //     return res.render('/login')
@@ -124,7 +137,7 @@ app.post('/api/register', function (req, res, next) {
   });
 })
 
-app.post('/api/login', function (req, res, next) {
+app.post('/login', function (req, res, next) {
   try{
     connection.query('SELECT * FROM users WHERE email=?',[req.body.email],
     function(err, users) {
