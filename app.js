@@ -62,20 +62,20 @@ app.use(cookieParser());
 //     maxAge: 3600
 // }
 // app.use(cors(corsOptions));
-// app.use(cors({
-//   origin:"http://localhost:3000",
-//   credentials :true
-// }));
+app.use(cors({
+  origin:"https://lambent-donut-b06776.netlify.app",
+  credentials :true
+}));
 
-app.use((req,res,next)=>{
-  res.setHeader("Access-Control-Allow-Origin", "https://lambent-donut-b06776.netlify.app");
-  res.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
-  res.setHeader("Access-Control-Max-Age", "3600");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Origin, Cache-Control, X-Requested-With");
-  res.setHeader("Access-Control-Allow-Credentials", "true");
+// app.use((req,res,next)=>{
+//   res.setHeader("Access-Control-Allow-Origin", "https://lambent-donut-b06776.netlify.app");
+//   res.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
+//   res.setHeader("Access-Control-Max-Age", "3600");
+//   res.setHeader("Access-Control-Allow-Headers", "Content-Type, Origin, Cache-Control, X-Requested-With");
+//   res.setHeader("Access-Control-Allow-Credentials", "true");
 
-  next();
-})
+//   next();
+// })
 // app.use(sessions({
 //   secret : 'session_secret',
 //   resave:false,
