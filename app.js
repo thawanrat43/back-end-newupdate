@@ -62,11 +62,22 @@ app.use(cookieParser());
 //     maxAge: 3600
 // }
 // app.use(cors(corsOptions));
-app.use(cors({
-  origin:"https://lambent-donut-b06776.netlify.app",
+// app.use(cors({
+//   origin:"http://localhost:3000",
+//   credentials :true
+// }));
+var allowlist = ['http://example1.com', 'http://example2.com']
+var corsOptionsDelegate = function (req, callback) {
   credentials :true
-}));
-
+  var corsOptions;
+  if (allowlist.indexOf(req.header('Origin')) !== -1) {
+    corsOptions = { origin: true } // reflect (enable) the requested origin in the CORS response
+  } else {
+    corsOptions = { origin: false } // disable CORS for this request
+  }
+  callback(null, corsOptions) // callback expects two parameters: error and options
+}
+ap.use(cors(corsOptionsDelegate))
 // app.use((req,res,next)=>{
 //   res.setHeader("Access-Control-Allow-Origin", "https://lambent-donut-b06776.netlify.app");
 //   res.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
