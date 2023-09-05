@@ -30,11 +30,7 @@ const upload = multer({dest: 'uploads/'});
 app.use(cookieParser());
 // parse application/json
 // app.use(cors())
-response.setHeader("Access-Control-Allow-Origin", "*");
-response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
-response.setHeader("Access-Control-Max-Age", "3600");
-response.setHeader("Access-Control-Allow-Headers", "Content-Type, Origin, Cache-Control, X-Requested-With");
-response.setHeader("Access-Control-Allow-Credentials", "true");
+
 
 // const API_URL ='http://localhost:3000'
 // const proxyOptions = {
@@ -60,13 +56,15 @@ response.setHeader("Access-Control-Allow-Credentials", "true");
 // }));
 
 
-// app.use((req,res,next)=>{
-//   res.setHeader('Access-Control-Allow-Origin','*');
-//   res.setHeader('Access-Control-Allow-Headers','Origin, X-Requested-With, Content-Type, Accept');
-//   res.settHheader( "Access-Control-Allow-Methods", "PUT, POST, GET, DELETE, PATCH, OPTIONS" ); 
+app.use((req,res,next)=>{
+  response.setHeader("Access-Control-Allow-Origin", "*");
+  response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
+  response.setHeader("Access-Control-Max-Age", "3600");
+  response.setHeader("Access-Control-Allow-Headers", "Content-Type, Origin, Cache-Control, X-Requested-With");
+  response.setHeader("Access-Control-Allow-Credentials", "true");
 
-//   next();
-// })
+  next();
+})
 // app.use(sessions({
 //   secret : 'session_secret',
 //   resave:false,
