@@ -77,7 +77,7 @@ var corsOptionsDelegate = function (req, callback) {
   }
   callback(null, corsOptions) // callback expects two parameters: error and options
 }
-ap.use(cors(corsOptionsDelegate))
+app.use(cors(corsOptionsDelegate))
 // app.use((req,res,next)=>{
 //   res.setHeader("Access-Control-Allow-Origin", "https://lambent-donut-b06776.netlify.app");
 //   res.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
