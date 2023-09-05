@@ -32,6 +32,7 @@ app.use(cookieParser());
 const whitelist = ['http://localhost:3000', 'https://lambent-donut-b06776.netlify.app'];
 const corsOptions = {
   credentials: true, // This is important.
+  methods: "POST,GET",
   origin: (origin, callback) => {
     if(whitelist.includes(origin))
       return callback(null, true)
