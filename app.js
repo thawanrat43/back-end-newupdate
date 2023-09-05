@@ -29,14 +29,19 @@ const upload = multer({dest: 'uploads/'});
 // create application/json parser
 app.use(cookieParser());
 // parse application/json
-// app.use(cors())
-const corsOptions ={
-    origin: ['https://64f5bb2ad019ec2e9a3744c9--grand-dolphin-262897.netlify.app/'], 
-    credentials:true,            
-    maxAge: 3600
-}
-app.use(cors(corsOptions));
-// app.use(cors());
+app.use(cors())
+// const corsOptions ={
+//     origin: ['https://64f5bb2ad019ec2e9a3744c9--grand-dolphin-262897.netlify.app/'], 
+//     credentials:true,            
+//     maxAge: 3600
+// }
+// app.use(cors(corsOptions));
+// app.use(cors({
+//   origin:"http://localhost:3000",
+//   credentials :true
+// }));
+
+
 // app.use((req,res,next)=>{
 //   res.setHeader('Access-Control-Allow-Origin','*');
 //   res.setHeader('Access-Control-Allow-Headers','Origin, X-Requested-With, Content-Type, Accept');
@@ -165,7 +170,7 @@ app.post('/api/login', function (req, res, next) {
   }
   
 })
-app.get('/api/profile/:id',function (req, res, next) {
+app.get('/profile/:id',function (req, res, next) {
   const userid = req.params.id;
   
   try{
