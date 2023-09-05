@@ -55,7 +55,11 @@ app.use(cookieParser());
 
 // const proxy = createProxyMiddleware(proxyOptions);
 
-
+app.use(cors({
+  origin: "https://lambent-donut-b06776.netlify.app",
+  headers: ["Content-Type"],
+  credentials: true,
+}));
 // const corsOptions ={
 //     origin: ['https://64f5bb2ad019ec2e9a3744c9--grand-dolphin-262897.netlify.app/'], 
 //     credentials:true,            
@@ -66,18 +70,18 @@ app.use(cookieParser());
 //   origin:"http://localhost:3000",
 //   credentials :true
 // }));
-var allowlist = ['http://example1.com', 'http://example2.com']
-var corsOptionsDelegate = function (req, callback) {
-  credentials :true
-  var corsOptions;
-  if (allowlist.indexOf(req.header('Origin')) !== -1) {
-    corsOptions = { origin: true } // reflect (enable) the requested origin in the CORS response
-  } else {
-    corsOptions = { origin: false } // disable CORS for this request
-  }
-  callback(null, corsOptions) // callback expects two parameters: error and options
-}
-app.use(cors(corsOptionsDelegate))
+// var allowlist = ['http://example1.com', 'http://example2.com']
+// var corsOptionsDelegate = function (req, callback) {
+//   credentials :true
+//   var corsOptions;
+//   if (allowlist.indexOf(req.header('Origin')) !== -1) {
+//     corsOptions = { origin: true } // reflect (enable) the requested origin in the CORS response
+//   } else {
+//     corsOptions = { origin: false } // disable CORS for this request
+//   }
+//   callback(null, corsOptions) // callback expects two parameters: error and options
+// }
+// app.use(cors(corsOptionsDelegate))
 // app.use((req,res,next)=>{
 //   res.setHeader("Access-Control-Allow-Origin", "https://lambent-donut-b06776.netlify.app");
 //   res.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
