@@ -31,18 +31,18 @@ app.use(cookieParser());
 // parse application/json
 // const whitelist = [ 'https://lambent-donut-b06776.netlify.app'];
 
-var corsOptions = {
-  credentials: true,
-  origin: function (origin, callback) {
-    if (whitelist.indexOf(origin) !== -1) {
-      callback(null, true)
-    } else {
-      callback(new Error('Not allowed by CORS'))
-    }
-  }
-}
+// var corsOptions = {
+//   credentials: true,
+//   origin: function (origin, callback) {
+//     if (whitelist.indexOf(origin) !== -1) {
+//       callback(null, true)
+//     } else {
+//       callback(new Error('Not allowed by CORS'))
+//     }
+//   }
+// }
 
-app.use(cors(corsOptions));
+// app.use(cors(corsOptions));
 // app.use(cors());
 // const API_URL ='http://localhost:3000'
 // const proxyOptions = {
