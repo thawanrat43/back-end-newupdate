@@ -29,20 +29,18 @@ const upload = multer({dest: 'uploads/'});
 // create application/json parser
 app.use(cookieParser());
 // parse application/json
-app.options('https://lambent-donut-b06776.netlify.app', cors())
-// const whitelist = ['http://localhost:3000', 'https://lambent-donut-b06776.netlify.app'];
-// const corsOptions = {
-//   credentials: true, // This is important.
-  
-//   origin: (origin, callback) => {
-//     if(whitelist.includes(origin))
-//       return callback(null, true)
+const whitelist = ['http://localhost:3000', 'https://lambent-donut-b06776.netlify.app'];
+var corsOptions = {
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true)
+    } else {
+      callback(new Error('Not allowed by CORS'))
+    }
+  }
+}
 
-//       callback(new Error('Not allowed by CORS'));
-//   }
-// }
-
-// app.use(cors(corsOptions));
+app.use(cors(corsOptions));
 
 // const API_URL ='http://localhost:3000'
 // const proxyOptions = {
