@@ -54,9 +54,9 @@ app.use(cookieParser());
 // }
 
 // const proxy = createProxyMiddleware(proxyOptions);
-
+// http://lambent-donut-b06776.netlify.app
 app.use(cors({
-  origin: "https://lambent-donut-b06776.netlify.app",
+  origin: "http://localhost:3000",
   headers: ["Content-Type"],
   credentials: true,
 }));
@@ -186,7 +186,7 @@ app.post('/login', function (req, res, next) {
               // session.userid = users[0].id;
               // req.session.islogin = true;
               // console.log(req.session)
-              // const token = jwt.sign({ id :users[0].id},process.env.TOKEN_KEY,{expiresIn:"2h"});
+              const token = jwt.sign({ id :users[0].id},process.env.TOKEN_KEY,{expiresIn:"2h"});
               // // users[0].token = token;
               // // return res.status(201).json(users);
               // return res
@@ -197,7 +197,7 @@ app.post('/login', function (req, res, next) {
               //   .status(200)
               //   .json(users[0].id);
                 
-              return res.status(200).json('ok');
+              return res.json({status : 'OK',message:'login success',token})
             }else{
               return res.json({status : 'Error'})
             }
@@ -336,7 +336,7 @@ app.post('/updatepic/:id',uploads.single('file'),function (req, res, next){
   
 // }
 app.get('/profileid',  function (req, res, next) {
-  const token = req.cookies.access_token;
+  const token = req.headers.authorization.split(' ')[1];
   if (!token) return res.status(401).json("Not authenticated!");
   jwt.verify(token,process.env.TOKEN_KEY, (err, userInfo) => {
     if (err) return res.status(403).json("Token is not valid!");
