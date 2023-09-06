@@ -336,7 +336,7 @@ app.post('/updatepic/:id',uploads.single('file'),function (req, res, next){
   
 // }
 app.get('/profileid',  function (req, res, next) {
-  const token = req.headers.authorization.split(' ')[1];
+  // const token = req.headers.authorization.split(' ')[1];
   if (!token) return res.status(401).json("Not authenticated!");
   jwt.verify(token,process.env.TOKEN_KEY, (err, userInfo) => {
     if (err) return res.status(403).json("Token is not valid!");
