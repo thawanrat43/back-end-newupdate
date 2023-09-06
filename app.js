@@ -186,7 +186,7 @@ app.post('/login', function (req, res, next) {
               // session.userid = users[0].id;
               // req.session.islogin = true;
               // console.log(req.session)
-              const token = jwt.sign({ id :users[0].id},process.env.TOKEN_KEY,{expiresIn:"2h"});
+              // const token = jwt.sign({ id :users[0].id},process.env.TOKEN_KEY,{expiresIn:"2h"});
               // // users[0].token = token;
               // // return res.status(201).json(users);
               // return res
@@ -196,8 +196,8 @@ app.post('/login', function (req, res, next) {
               //   })
               //   .status(200)
               //   .json(users[0].id);
-                
-              return res.json({status : 'OK',message:'login success',token})
+              return res.status(200).json('ok');
+              // return res.json({status : 'OK',message:'login success',token})
             }else{
               return res.json({status : 'Error'})
             }
