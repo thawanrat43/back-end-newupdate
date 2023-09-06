@@ -56,7 +56,7 @@ app.use(cookieParser());
 // const proxy = createProxyMiddleware(proxyOptions);
 // http://lambent-donut-b06776.netlify.app
 app.use(cors({
-  origin: "http://localhost:3000",
+  origin: "https://64f7ff2936356b307e42dcee--venerable-axolotl-d1d4fd.netlify.app",
   headers: ["Content-Type"],
   credentials: true,
 }));
