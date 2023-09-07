@@ -62,7 +62,7 @@ app.use(cookieParser());
 // http://lambent-donut-b06776.netlify.app
 // https://64f7ff2936356b307e42dcee--venerable-axolotl-d1d4fd.netlify.app
 app.use(cors({
-  origin: ["https://64f98b2201e0c64d864c41e1--fanciful-babka-89b307.netlify.app","http://localhost:3000"],
+  origin: ["https://64f99b4f4a4e9a5b938ce0dd--startling-narwhal-35864e.netlify.app","http://localhost:3000"],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
