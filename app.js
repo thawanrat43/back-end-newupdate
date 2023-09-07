@@ -329,6 +329,22 @@ app.post('/updatepic/:id',uploads.single('file'),function (req, res, next){
 //   }
   
 // }
+app.get('/token',  function (req, res, next) {
+  try{
+    const token = req.headers.authorization.split(' ')[1];
+    if (!token) return res.status(401).json("Not authenticated!");
+    jwt.verify(token,process.env.TOKEN_KEY, (err, usertoken) => {
+      if (err) return res.status(403).json("Token is not valid!");
+      else{
+        res.json(usertoken)
+      }
+    })
+  }catch{
+    res.status(500).send('Server token Error')
+  }
+  
+})
+
 app.get('/profileid',  function (req, res, next) {
   const token = req.headers.authorization.split(' ')[1];
   if (!token) return res.status(401).json("Not authenticated!");
