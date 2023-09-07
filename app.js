@@ -18,7 +18,12 @@ const mysql = require('mysql2');
 // const connection = require('./db')
 // const { process } = require('ipaddr.js');
 const connection =mysql.createConnection(process.env.DATABASE_URL);
-
+// const connection = mysql.createConnection({
+//   host: 'localhost',
+//   user: 'root',
+//   password: '',
+//   database: 'check_database'
+// });
 // const { result } = require('lodash');
 // const router = express.Router();
 // const morgan = require('morgan');
@@ -124,10 +129,10 @@ app.use(express.static('uploads'));
 //     })
 // })
 // app.use("/api/login",loginRoutes);
-// app.get("/", (req, res) => {
-//   // server จะสามารถส่งทั้ง header ต่างๆหรือจะตัวหนังสือ json อะไรก็ได้กลับไป
-//   res.send("Hello World");
-// });
+app.get("/", (req, res) => {
+  // server จะสามารถส่งทั้ง header ต่างๆหรือจะตัวหนังสือ json อะไรก็ได้กลับไป
+  res.send("Hello World");
+});
 // app.use(function (req, res, next) {
 
 //   // Website you wish to allow to connect
@@ -184,27 +189,14 @@ app.post('/login', function (req, res, next) {
               return res.status(400).json('wrong password');
             }
             if(islogin) {
-              // session = req.session;
-              // session.userid = users[0].id;
-              // req.session.islogin = true;
-              // console.log(req.session)
               const token = jwt.sign({ id :users[0].id},process.env.TOKEN_KEY,{expiresIn:"2h"});
-              // // users[0].token = token;
-              // // return res.status(201).json(users);
-              // return res
-              //   .cookie("access_token", token, {
-              //     httpOnly: true,
-                  
-              //   })
-              //   .status(200)
-              //   .json(users[0].id);
-              // return res.status(200).json('ok');
-              return res.json({status : 'OK',message:'login success',token})
+              const status = users[0].status;
+              console.log(status)
+              return res.json({message:'login success',token,status})
             }else{
               return res.json({status : 'Error'})
             }
 
-            
           });
         }
       }
@@ -380,11 +372,6 @@ app.post('/home', function (req, res, next) {
      
     }
   })
-  
-  
-   
-      
-
 })
 app.post('/idhistory',function (req, res, next){
   try {
@@ -436,7 +423,7 @@ app.post('/adminregister', function (req, res, next) {
 })
 app.get('/adminuser',function (req,res,next){
   try{
-    connection.execute("SELECT username,lname,fname,email,phonenum,profilepic,id  FROM users",(err,data) =>  {
+    connection.execute("SELECT username,lname,fname,email,phonenum,profilepic,id,status  FROM users",(err,data) =>  {
       if (err) return res.send(err);
       return res.json(data);
     })
@@ -546,7 +533,7 @@ app.get('/history/:id',upload.single('file'),function (req, res, next) {
   const userid = req.params.id;
   
   try{
-    connection.execute("SELECT lname,fname,type_id,idcard  FROM history WHERE idhistory=? ",[userid],(err,data) =>  {
+    connection.execute("SELECT lname,fname,type_id,idcard,pay  FROM history WHERE idhistory=? ",[userid],(err,data) =>  {
       if (err) return res.send(err);
       return res.json(data);
     })
@@ -555,24 +542,26 @@ app.get('/history/:id',upload.single('file'),function (req, res, next) {
     return res.status(500).send();
   }
 })
-app.get('/profilehistory/:id',function (req, res, next) {
-  const userid = req.params.id;
-  
-  try{
-    connection.execute("SELECT userid FROM history WHERE idhistory=? ",[userid],(err,data) =>  {
-      if (err) return res.send(err);
-      connection.execute("SELECT * FROM users WHERE id=? ",[data[0].userid],(err,imgdata) =>  {
-        if (err) return res.send(err);
-        return res.json(imgdata);
-          
-      })
+// app.get('/profilehistory/:id',function (req, res, next) {
+//   const userid = req.params.id;
+//   try{
+//     connection.execute("SELECT userid FROM history WHERE idhistory=? ",[userid],(err,data) =>  {
+//       if (err) return res.send(err);
       
-    })
-  }catch(err){
-    console.log(err);
-    return res.status(500).send();
-  }
-})
+//       else{
+//         connection.query("SELECT * FROM users WHERE id = ?", [data[0].userid], (err,paydata) => {
+//           if (err) return res.send(err);
+//           return res.json(paydata);
+//         })
+//       }
+      
+      
+//     })
+//   }catch(err){
+//     console.log(err);
+//     return res.status(500).send();
+//   }
+// })
 
 // const checkcookie = (req, res, next) => {
 //   const token = req.cookies.access_token;
@@ -601,7 +590,19 @@ app.get('/profilehistory/:id',function (req, res, next) {
 
 //   // res.end();
 // });
-
+app.post('/paystatus/:id',function (req, res, next){
+  try {
+      const userid = req.params.id
+      connection.query("UPDATE history SET pay= ? WHERE idhistory=? ",[req.body.pay,userid],(err,updatedata) =>  {
+        if (err) return res.send(err);
+        return res.json(updatedata);
+      })
+  } catch (err) {
+      // error
+      console.log(err)
+      res.status(500).send('Server Error')
+  }
+})
 
 
 // app.listen(process.env.PROST || 3000)
