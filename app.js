@@ -542,26 +542,26 @@ app.get('/history/:id',upload.single('file'),function (req, res, next) {
     return res.status(500).send();
   }
 })
-// app.get('/profilehistory/:id',function (req, res, next) {
-//   const userid = req.params.id;
-//   try{
-//     connection.execute("SELECT userid FROM history WHERE idhistory=? ",[userid],(err,data) =>  {
-//       if (err) return res.send(err);
+app.get('/profilehistory/:id',function (req, res, next) {
+  const userid = req.params.id;
+  try{
+    connection.execute("SELECT userid FROM history WHERE idhistory=? ",[userid],(err,data) =>  {
+      if (err) return res.send(err);
       
-//       else{
-//         connection.query("SELECT * FROM users WHERE id = ?", [data[0].userid], (err,paydata) => {
-//           if (err) return res.send(err);
-//           return res.json(paydata);
-//         })
-//       }
+      else{
+        connection.query("SELECT * FROM users WHERE id = ?", [data[0].userid], (err,paydata) => {
+          if (err) return res.send(err);
+          return res.json(paydata);
+        })
+      }
       
       
-//     })
-//   }catch(err){
-//     console.log(err);
-//     return res.status(500).send();
-//   }
-// })
+    })
+  }catch(err){
+    console.log(err);
+    return res.status(500).send();
+  }
+})
 
 // const checkcookie = (req, res, next) => {
 //   const token = req.cookies.access_token;
