@@ -60,9 +60,9 @@ app.use(cookieParser());
 
 // const proxy = createProxyMiddleware(proxyOptions);
 // http://lambent-donut-b06776.netlify.app
-// https://64f7ff2936356b307e42dcee--venerable-axolotl-d1d4fd.netlify.app
+// https://64f7ff2936356b307e42dcee--venerable-axolotl-d1d4fd.netlifye4s.app
 app.use(cors({
-  origin: ["https://64f99b4f4a4e9a5b938ce0dd--startling-narwhal-35864e.netlify.app","http://localhost:3000"],
+  origin: ["https://64f99b4f4a4e9a5b938ce0dd--startling-narwhal-35864e.netlify.app","http://localhost:3000","https://64fe85eefa00dc1a87fbc43a--dazzling-dasik-93e12b.netlify.app"],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
