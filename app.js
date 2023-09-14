@@ -241,13 +241,13 @@ app.post('/code/:id',function (req, res, next) {
       if(data){ 
         bcrypt.compare(oldpassword,data[0].password, function(err,isPassword) { 
           if(err){
-            return res.status(400).json('wrong password');
+            return res.status(500).json('wrong password');
           }
           if(isPassword) {
             if(conpassword==newpassword){
               bcrypt.hash(newpassword, saltRounds, function(err, hash) {
                 if(err){
-                  return res.status(400).json('update error');
+                  return res.status(500).json('update error');
                 }
                 connection.query("UPDATE users SET password= ? WHERE id=? ",[hash,userid],(err,updatedata) =>  {
                   if (err) return res.send(err);
@@ -256,7 +256,7 @@ app.post('/code/:id',function (req, res, next) {
               })
             }
             else{
-              return res.status(400).json('Password is not the same');
+              return res.status(500).json('Password is not the same');
             }
             
             
@@ -264,7 +264,7 @@ app.post('/code/:id',function (req, res, next) {
         })
       }
       if(err){
-        return res.status(400).json('Error');
+        return res.status(500).json('Error');
       }
     })
   }catch(err){
