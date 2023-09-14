@@ -62,7 +62,7 @@ app.use(cookieParser());
 // http://lambent-donut-b06776.netlify.app
 // https://64f7ff2936356b307e42dcee--venerable-axolotl-d1d4fd.netlifye4s.app
 app.use(cors({
-  origin: ["https://64f99b4f4a4e9a5b938ce0dd--startling-narwhal-35864e.netlify.app","http://localhost:3000","https://64fe8726ea09c4201a237bf8--majestic-alfajores-9ccab9.netlify.app","https://6502896375adcf0d9d732a4f--tourmaline-cheesecake-6a3e12.netlify.app"],
+  origin: ["https://64f99b4f4a4e9a5b938ce0dd--startling-narwhal-35864e.netlify.app","http://localhost:3000","https://64fe8726ea09c4201a237bf8--majestic-alfajores-9ccab9.netlify.app","https://650291076cfc3a12da215377--deft-gaufre-e9ad20.netlify.app"],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
@@ -444,7 +444,9 @@ app.get('/profileid',  function (req, res, next) {
 })
 app.post('/home', function (req, res, next) {
   const token = req.headers.authorization.split(' ')[1];
-  if (!token) return res.status(500).json("Not authenticated!");
+  if (!token) {
+    return res.status(500).json("Not authenticated!");
+  }
   else{
     jwt.verify(token,process.env.TOKEN_KEY, (err, userInfo) => {
       if (err) return res.status(500).json("Token is not valid!");
