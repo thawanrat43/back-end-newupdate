@@ -261,9 +261,12 @@ app.post('/code/:id',function (req, res, next) {
             
             
           } 
+          else{
+            return res.status(500).json('wrong password');
+          }
         })
       }
-      if(err){
+      else{
         return res.status(500).json('Error');
       }
     })
