@@ -156,21 +156,34 @@ app.post('/register', function (req, res, next) {
   const status = '1';
   const statusadmin = '';
   connection.query("SELECT username FROM users WHERE username = ?", [req.body.username], (err, data) => {
-    if (err) return res.status(500).json(err);
-    if (data.length > 0) return res.status(409).json("User already exists!");
-    bcrypt.hash(req.body.password, saltRounds, function(err, hash) {
-      connection.execute(
-        'INSERT INTO users(email,password,fname,lname,username,phonenum,status,statusadmin,profilepic) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
-        [req.body.email, hash,req.body.fname,req.body.lname,req.body.username,req.body.phonenum,status,statusadmin,img],
-        function(err, results, fields) {
-          if (err) return res.status(500).json(err);
-          return res.status(200).json("User has been created.");
-
-
-        }
-      );
+    if (err) return res.status(500).json("This username already exists.");
+    if (data.length > 0) 
+        return res.status(500).json("This username already exists.");
+    else{
+      connection.query("SELECT email FROM users WHERE email = ?", [req.body.email], (err, data) => {
+        if (err) return res.status(500).json("This E-mail already exists.");
+        if (data.length > 0) 
+          return res.status(500).json("This E-mail already exists.");
+        else{
+          bcrypt.hash(req.body.password, saltRounds, function(err, hash) {
+            connection.execute(
+              'INSERT INTO users(email,password,fname,lname,username,phonenum,status,statusadmin,profilepic) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
+              [req.body.email, hash,req.body.fname,req.body.lname,req.body.username,req.body.phonenum,status,statusadmin,img],
+              function(err, results, fields) {
+                if (err) return res.status(500).json(err);
+                return res.status(200).json("User has been created.");
     
-    });
+    
+              }
+            );
+          
+          });
+        }
+        
+      })
+    }
+    
+    
   });
 })
 
@@ -273,18 +286,85 @@ app.get('/image/:id',upload.single('file'),function (req, res, next) {
     return res.status(500).send();
   }
 })
+// app.post('/profileupdatephonenum/:id',function (req, res, next) {
+//   const userid = req.params.id;
+//   try{
+    
+//   }catch(err){
+//     console.log(err);
+//     return res.status(500).send();
+//   }
+// })
 app.post('/profileupdate/:id',function (req, res, next) {
   const userid = req.params.id;
   try{
-    connection.query("UPDATE users SET username=?,fname=?,lname=?,phonenum=? ,profilepic= ? WHERE id=? ",[req.body.username,req.body.fname,req.body.lname,req.body.phonenum,req.body.profilepic,userid],(err,updatedata) =>  {
-      if (err) return res.send(err);
-      return res.json(updatedata);
-    })
+    connection.execute("SELECT username FROM users WHERE username=? ",[req.body.username],(err,data) =>  {
+          if (err) return res.send(err);
+          if(data.length > 0){
+            res.status(400).json('Username already exists!');
+          }else{
+            connection.query("UPDATE users SET username=?,fname=?,lname=?,phonenum=? WHERE id=? ",[req.body.username,req.body.fname,req.body.lname,req.body.phonenum,userid],(err,updatedata) =>  {
+                if (err) return res.send(err);
+                return res.json(updatedata);
+            })
+          }
+    
+        })
+    // if(Object.keys(req.body.username).length > 0){
+    //   connection.execute("SELECT username FROM users WHERE username=? ",[req.body.username],(err,data) =>  {
+    //     if (err) return res.send(err);
+    //     if(data.length > 0){
+    //       res.status(400).json('Username already exists!');
+    //     }else{
+    //       connection.query("UPDATE users SET username=? WHERE id=? ",[req.body.username,userid],(err,updatedata) =>  {
+    //           if (err) return res.send(err);
+    //           return res.json(updatedata);
+    //       })
+    //     }
+  
+    //   })
+    // }
+    // if(Object.keys(req.body.fname).length > 0){
+    //   connection.query("UPDATE users SET fname=? WHERE id=? ",[req.body.fname,userid],(err,updatedata) =>  {
+    //     if (err) return res.send(err);
+    //     return res.json(updatedata);
+    //   })
+    // }
+    // if(Object.keys(req.body.phonenum).length > 0){
+    //   connection.query("UPDATE users SET phonenum=? WHERE id=? ",[req.body.phonenum,userid],(err,updatedata) =>  {
+    //     if (err) return res.send(err);
+    //     return res.json(updatedata);
+    //   })
+    // }
+    // if(Object.keys(req.body.lname).length > 0){
+    //   connection.query("UPDATE users SET lname=? WHERE id=? ",[req.body.lname,userid],(err,updatedata) =>  {
+    //     if (err) return res.send(err);
+    //     return res.json(updatedata);
+    //   })
+    // }
   }catch(err){
     console.log(err);
     return res.status(500).send();
   }
 })
+// app.post('/profileupdatefname/:id',function (req, res, next) {
+//   const userid = req.params.id;
+//   try{
+    
+//   }catch(err){
+//     console.log(err);
+//     return res.status(500).send();
+//   }
+// })  
+// app.post('/profileupdatelname/:id',function (req, res, next) {
+//   const userid = req.params.id;
+//   try{
+    
+//   }catch(err){
+//     console.log(err);
+//     return res.status(500).send();
+//   }
+// })  
 const storage = multer.diskStorage({
   destination: function(req, file, callback) {
     callback(null, './uploads');
@@ -419,22 +499,36 @@ app.post('/homes/:id', function (req, res, next) {
 app.post('/adminregister', function (req, res, next) {
   const img = 'user-6820232_640.webp';
   connection.query("SELECT username FROM users WHERE username = ?", [req.body.username], (err, data) => {
-    if (err) return res.status(500).json(err);
-    if (data.length > 0) return res.status(409).json("User already exists!");
-    bcrypt.hash(req.body.password, saltRounds, function(err, hash) {
-      connection.execute(
-        'INSERT INTO users(email,password,fname,lname,username,phonenum,status,statusadmin,profilepic) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
-        [req.body.email, hash,req.body.fname,req.body.lname,req.body.username,req.body.phonenum,req.body.status,req.body.statusadmin,img],
-        function(err, results, fields) {
-          if (err) return res.status(500).json(err);
-          return res.status(200).json("User has been created.");
-
-
-        }
-      );
+    if (err) return res.status(500).json("This username already exists.");
+    if (data.length > 0) 
+        return res.status(500).json("This username already exists.");
+    else{
+      connection.query("SELECT email FROM users WHERE email = ?", [req.body.email], (err, data) => {
+        if (err) return res.status(500).json("This E-mail already exists.");
+        if (data.length > 0) 
+          return res.status(500).json("This E-mail already exists.");
+        else{
+          bcrypt.hash(req.body.password, saltRounds, function(err, hash) {
+            connection.execute(
+              'INSERT INTO users(email,password,fname,lname,username,phonenum,status,statusadmin,profilepic) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
+              [req.body.email, hash,req.body.fname,req.body.lname,req.body.username,req.body.phonenum,req.body.status,req.body.statusadmin,img],
+              function(err, results, fields) {
+                if (err) return res.status(500).json(err);
+                return res.status(200).json("User has been created.");
     
-    });
+    
+              }
+            );
+          
+          });
+        }
+        
+      })
+    }
+    
+    
   });
+  
   
 })
 app.get('/adminuser',function (req,res,next){
