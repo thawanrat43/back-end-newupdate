@@ -444,33 +444,39 @@ app.get('/profileid',  function (req, res, next) {
 })
 app.post('/home', function (req, res, next) {
   const token = req.headers.authorization.split(' ')[1];
-  if (!token) return res.status(401).json("Not authenticated!");
-  jwt.verify(token,process.env.TOKEN_KEY, (err, userInfo) => {
-    if (err) return res.status(403).json("Token is not valid!");
-    else{
-      const pay_id = 'ยังไม่ชำระเงิน';
-      connection.query("SELECT * FROM users WHERE id = ?", [userInfo.id], (err, data) => {
-        if (err) return res.send(err);
-        else{
-          connection.execute("INSERT INTO history(fname,lname,idcard,userid,type_id,criminal,bankrupt,credit,penalty,global,other_text,pay) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-          [req.body.fname,req.body.lname,req.body.idcard,data[0].id,req.body.type_id,req.body.criminal,req.body.bankrupt,req.body.credit,req.body.penalty,req.body.global,req.body.other_text,pay_id],
-            function(err, results, fields) {
-              if(err) {
-                res.json({status:'error',message:err})
-                return
+  if (!token) return res.status(500).json("Not authenticated!");
+  else{
+    jwt.verify(token,process.env.TOKEN_KEY, (err, userInfo) => {
+      if (err) return res.status(500).json("Token is not valid!");
+      else{
+        const pay_id = 'ยังไม่ชำระเงิน';
+        connection.query("SELECT * FROM users WHERE id = ?", [userInfo.id], (err, data) => {
+          if (err) return res.status(500).send(err);
+          else{
+            connection.execute("INSERT INTO history(fname,lname,idcard,userid,type_id,criminal,bankrupt,credit,penalty,global,other_text,pay) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+            [req.body.fname,req.body.lname,req.body.idcard,data[0].id,req.body.type_id,req.body.criminal,req.body.bankrupt,req.body.credit,req.body.penalty,req.body.global,req.body.other_text,pay_id],
+              function(err, results, fields) {
+                if(err) {
+                  res.json({status:'error',message:err})
+                  return
+                }
+                else{
+                  return res.json(results);
+                }
+                  
               }
-                return res.json(results);
-            }
-            
-          )
-            
-         
-        }
-      })
-      
-     
-    }
-  })
+              
+            )
+              
+           
+          }
+        })
+        
+       
+      }
+    })
+  }
+  
 })
 app.post('/idhistory',function (req, res, next){
   try {
