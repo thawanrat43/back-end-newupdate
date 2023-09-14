@@ -192,14 +192,14 @@ app.post('/login', function (req, res, next) {
     connection.query('SELECT * FROM users WHERE email=?',[req.body.email],
     function(err, users) {
       if(err) {
-        return res.status(400).json("no user found");
+        return res.status(500).json("no user found");
        
       }
       if(users.length > 0){
           bcrypt.compare(req.body.password, users[0].password, function(err, islogin) { 
             if(err){
               console.log(req.body.password)
-              return res.status(400).json('wrong password');
+              return res.status(500).json('wrong password');
             }
             if(islogin) {
               const token = jwt.sign({ id :users[0].id},process.env.TOKEN_KEY,{expiresIn:"2h"});
@@ -207,7 +207,7 @@ app.post('/login', function (req, res, next) {
               console.log(status)
               return res.json({message:'login success',token,status})
             }else{
-              return res.json({status : 'Error'})
+              return res.status(500).json('wrong password');
             }
 
           });
