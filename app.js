@@ -18,13 +18,13 @@ const nodemailer = require("nodemailer");
 // create the connection to database
 // const connection = require('./db')
 // const { process } = require('ipaddr.js');
-// const connection =mysql.createConnection(process.env.DATABASE_URL);
-const connection = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: '',
-  database: 'check_database'
-});
+const connection =mysql.createConnection(process.env.DATABASE_URL);
+// const connection = mysql.createConnection({
+//   host: 'localhost',
+//   user: 'root',
+//   password: '',
+//   database: 'check_database'
+// });
 // const { result } = require('lodash');
 // const router = express.Router();
 // const morgan = require('morgan');
