@@ -12,7 +12,7 @@ const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const jwt = require('jsonwebtoken');
 const multer = require('multer')
-const { createProxyMiddleware } = require('http-proxy-middleware');
+
 const mysql = require('mysql2');
 const nodemailer = require("nodemailer");
 // create the connection to database
