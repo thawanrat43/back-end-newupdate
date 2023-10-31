@@ -273,7 +273,7 @@ app.get('/profile/:id',function (req, res, next) {
   const userid = req.params.id;
   
   try{
-    connection.execute("SELECT username,lname,fname,email,phonenum,profilepic,id  FROM users WHERE id=? ",[userid],(err,data) =>  {
+    connection.execute("SELECT *  FROM users WHERE id=? ",[userid],(err,data) =>  {
       if (err) return res.send(err);
       return res.json(data);
     })
