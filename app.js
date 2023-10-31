@@ -65,7 +65,7 @@ app.use(cookieParser());
 // http://lambent-donut-b06776.netlify.app
 // https://64f7ff2936356b307e42dcee--venerable-axolotl-d1d4fd.netlifye4s.app
 app.use(cors({
-  origin: ["https://64f99b4f4a4e9a5b938ce0dd--startling-narwhal-35864e.netlify.app","http://localhost:3000","https://64fe8726ea09c4201a237bf8--majestic-alfajores-9ccab9.netlify.app","https://650291076cfc3a12da215377--deft-gaufre-e9ad20.netlify.app"],
+  origin: ["https://65407bdfdde71c4b54c5b20d--stately-cupcake-1c1083.netlify.app","http://localhost:3000","https://64fe8726ea09c4201a237bf8--majestic-alfajores-9ccab9.netlify.app","https://650291076cfc3a12da215377--deft-gaufre-e9ad20.netlify.app"],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
@@ -1171,7 +1171,7 @@ app.get('/otp',function (req, res, next){
             });
             let mailOptions = {
               from: 'seen6083@gmail.com',                
-              to: 'thawanrat.so@ku.th',                
+              to: data[0].email,                
               subject: "OTP form Callback Coding",
               text: `Your OTP is: ${otp}`,  
             };
