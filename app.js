@@ -1982,6 +1982,19 @@ app.post('/filehistory/:id',uploadss.single('file'),function (req, res, next){
       res.status(500).send('Server Error')
   }
 })
+app.get('/gethistoryidcard/:id',function (req, res, next) {
+  const userid = req.params.id;
+  
+  try{
+    connection.execute("SELECT * FROM imgpay WHERE idhistory=? ",[userid],(err,data) =>  {
+      if (err) return res.send(err);
+      return res.json(data);
+    })
+  }catch(err){
+    console.log(err);
+    return res.status(500).send();
+  }
+})
 // app.listen(process.env.PROST || 3000)
 app.listen(3333,()=>{
   console.log("server start")
