@@ -1982,13 +1982,18 @@ app.post('/filehistory/:id',uploadss.single('file'),function (req, res, next){
       res.status(500).send('Server Error')
   }
 })
-app.get('/gethistoryidcard/:id',function (req, res, next) {
+app.post('/getcheckpayqr/:id',function (req, res, next) {
   const userid = req.params.id;
+  console.log(req.body.userid)
   
   try{
-    connection.execute("SELECT * FROM imgpay WHERE idhistory=? ",[userid],(err,data) =>  {
-      if (err) return res.send(err);
-      return res.json(data);
+    connection.query("UPDATE history SET pay= ? WHERE idhistory=? ",[req.body.qrcheck,req.body.userid],(err,updatedata) =>  {
+        if (err) return res.send(err);
+        else{
+          console.log('ok')
+          return res.json(updatedata);
+        }
+        
     })
   }catch(err){
     console.log(err);
