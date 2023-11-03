@@ -65,7 +65,7 @@ app.use(cookieParser());
 // http://lambent-donut-b06776.netlify.app
 // https://64f7ff2936356b307e42dcee--venerable-axolotl-d1d4fd.netlifye4s.app
 app.use(cors({
-  origin: ["https://65407bdfdde71c4b54c5b20d--stately-cupcake-1c1083.netlify.app","http://localhost:3000","https://654476ce5636ae40e9ffcdf5--super-croquembouche-d3c0d8.netlify.app","https://650291076cfc3a12da215377--deft-gaufre-e9ad20.netlify.app","https://654471ce5636ae3cdfffd223--bright-caramel-220f17.netlify.app","https://6544729d20f77c3f5d78f944--gentle-dasik-8d4dd1.netlify.app"],
+  origin: ["https://65407bdfdde71c4b54c5b20d--stately-cupcake-1c1083.netlify.app","http://localhost:3000","https://654476ce5636ae40e9ffcdf5--super-croquembouche-d3c0d8.netlify.app","https://650291076cfc3a12da215377--deft-gaufre-e9ad20.netlify.app","https://654471ce5636ae3cdfffd223--bright-caramel-220f17.netlify.app","https://6544729d20f77c3f5d78f944--gentle-dasik-8d4dd1.netlify.app","https://654477e3bf589d4302e23255--leafy-lebkuchen-bcad3a.netlify.app"],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
