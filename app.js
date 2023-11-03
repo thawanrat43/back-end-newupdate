@@ -1986,18 +1986,22 @@ app.post('/getcheckpayqr/:id',function (req, res, next) {
   const userid = req.params.id;
   console.log(req.body.userid)
   const checkpay = '';
-  if(req.body.qrcheck == 'การชำระเงินเสร็จสิ้น'){
-    checkpay= 'ชำระเงินเสร็จสิ้น';
-  }
+  
   try{
-    connection.query("UPDATE history SET pay= ? WHERE idhistory=? ",[checkpay,req.body.userid],(err,updatedata) =>  {
+    if(req.body.qrcheck == 'การชำระเงินเสร็จสิ้น'){
+      checkpay= 'ชำระเงินเสร็จสิ้น';
+      connection.query("UPDATE history SET pay= ? WHERE idhistory=? ",[checkpay,req.body.userid],(err,updatedata) =>  {
         if (err) return res.send(err);
         else{
           console.log('ok')
           return res.json(updatedata);
         }
         
-    })
+      })
+    }else{
+      
+    }
+    
   }catch(err){
     console.log(err);
     return res.status(500).send();
