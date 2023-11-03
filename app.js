@@ -1985,9 +1985,12 @@ app.post('/filehistory/:id',uploadss.single('file'),function (req, res, next){
 app.post('/getcheckpayqr/:id',function (req, res, next) {
   const userid = req.params.id;
   console.log(req.body.userid)
-  
+  const checkpay = '';
+  if(req.body.qrcheck == 'การชำระเงินเสร็จสิ้น'){
+    checkpay= 'ชำระเงินเสร็จสิ้น';
+  }
   try{
-    connection.query("UPDATE history SET pay= ? WHERE idhistory=? ",[req.body.qrcheck,req.body.userid],(err,updatedata) =>  {
+    connection.query("UPDATE history SET pay= ? WHERE idhistory=? ",[checkpay,req.body.userid],(err,updatedata) =>  {
         if (err) return res.send(err);
         else{
           console.log('ok')
