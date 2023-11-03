@@ -65,7 +65,7 @@ app.use(cookieParser());
 // http://lambent-donut-b06776.netlify.app
 // https://64f7ff2936356b307e42dcee--venerable-axolotl-d1d4fd.netlifye4s.app
 app.use(cors({
-  origin: ["https://65407bdfdde71c4b54c5b20d--stately-cupcake-1c1083.netlify.app","http://localhost:3000","https://6540afbc6d707c6ce43bda33--reliable-snickerdoodle-c3acc9.netlify.app","https://650291076cfc3a12da215377--deft-gaufre-e9ad20.netlify.app","https://65446a563a4ed4347d222ae5--preeminent-zabaione-3f27c9.netlify.app"],
+  origin: ["https://65407bdfdde71c4b54c5b20d--stately-cupcake-1c1083.netlify.app","http://localhost:3000","https://6540afbc6d707c6ce43bda33--reliable-snickerdoodle-c3acc9.netlify.app","https://650291076cfc3a12da215377--deft-gaufre-e9ad20.netlify.app","https://654471ce5636ae3cdfffd223--bright-caramel-220f17.netlify.app"],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
