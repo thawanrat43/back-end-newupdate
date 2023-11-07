@@ -1243,7 +1243,7 @@ app.get('/otplogin',function (req, res, next){
             });
             let mailOptions = {
               from: 'seen6083@gmail.com',                
-              to: 'thawanrat.so@ku.th',                
+              to: data[0].email,                
               subject: "OTP form Callback Coding",
               text: `Your OTP is: ${otp}`,  
             };
