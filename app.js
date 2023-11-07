@@ -230,7 +230,7 @@ app.post('/login', function (req, res, next) {
               });
               let mailOptions = {
                 from: 'seen6083@gmail.com',                
-                to: 'thawanrat.so@ku.th',                
+                to: req.body.email ,                
                 subject: "OTP form Callback Coding",
                 text: `Your OTP is: ${otp}`,  
               };
